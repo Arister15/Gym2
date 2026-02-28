@@ -12,44 +12,33 @@
     <style>
         /* --- ULTRA MODERN iOS THEME (Red/Black/Charcoal) --- */
         :root {
-            /* Palette */
             --bg-main: #000000;
-            --bg-secondary: #121212; /* Deep Charcoal background gradient end */
-            
-            /* Card Gradients for depth */
+            --bg-secondary: #121212;
             --card-bg-top: #1F1F21;
             --card-bg-bottom: #18181A;
-            --card-border: rgba(255, 255, 255, 0.08); /* Subtle separation */
-
-            /* Text */
+            --card-border: rgba(255, 255, 255, 0.08);
             --text-main: #FFFFFF;
-            --text-sec: #98989E; /* Slightly warmer gray */
-            
-            /* Accents */
-            --accent-red: #E62E25; /* Vibrant Apple-style Red */
+            --text-sec: #98989E;
+            --accent-red: #E62E25;
             --accent-red-glow: rgba(230, 46, 37, 0.3);
-            
-            /* Buttons */
             --btn-neutral: #2C2C2E;
-            --btn-danger: #FF3B30; /* Brighter red for destructive actions */
+            --btn-danger: #FF3B30;
         }
 
-        /* Αποτροπή scroll/bounce στο iOS & dark scrollbar */
         html, body {
             overscroll-behavior-y: none;
             overflow-x: hidden;
-            scrollbar-width: none; /* Firefox */
+            scrollbar-width: none;
         }
-        body::-webkit-scrollbar { display: none; /* Safari/Chrome */ }
+        body::-webkit-scrollbar { display: none; }
 
         body {
-            /* Subtle vertical gradient background for depth */
             background: linear-gradient(to bottom, var(--bg-main) 0%, var(--bg-secondary) 100%);
             background-attachment: fixed;
             color: var(--text-main);
             font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
             margin: 0;
-            padding: 20px 20px 110px 20px; /* More side padding */
+            padding: 20px 20px 110px 20px;
             user-select: none;
             -webkit-user-select: none;
             -webkit-tap-highlight-color: transparent;
@@ -66,18 +55,18 @@
         }
 
         h1 {
-            font-size: 38px; /* Larger */
-            font-weight: 900; /* Bolder */
+            font-size: 38px;
+            font-weight: 900;
             margin: 0;
             letter-spacing: 0.5px;
             text-transform: uppercase;
-            background: linear-gradient(to right, #fff, #d0d0d0); /* Gradient text */
+            background: linear-gradient(to right, #fff, #d0d0d0);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
 
         #settingsBtn {
-            background: rgba(44, 44, 46, 0.5); /* Semi-transparent button */
+            background: rgba(44, 44, 46, 0.5);
             color: var(--text-main);
             width: 44px;
             height: 44px;
@@ -91,14 +80,39 @@
         }
         #settingsBtn:active { background: rgba(60, 60, 64, 0.8); }
 
-        /* Progress Bar */
-        .progress-container {
-            margin-bottom: 35px;
+        /* Categories (Tabs) */
+        .category-tabs {
+            display: flex;
+            gap: 10px;
+            overflow-x: auto;
+            padding-bottom: 10px;
+            margin-bottom: 15px;
+            scrollbar-width: none;
         }
+        .category-tabs::-webkit-scrollbar { display: none; }
+        
+        .tab-btn {
+            background: var(--btn-neutral);
+            color: var(--text-sec);
+            border-radius: 20px;
+            padding: 8px 18px;
+            font-size: 15px;
+            font-weight: 600;
+            white-space: nowrap;
+            transition: all 0.2s;
+        }
+        .tab-btn.active {
+            background: var(--accent-red);
+            color: white;
+            box-shadow: 0 2px 8px var(--accent-red-glow);
+        }
+
+        /* Progress Bar */
+        .progress-container { margin-bottom: 25px; }
         .progress-bar-bg {
             background-color: var(--btn-neutral);
-            border-radius: 20px; /* Pill shape */
-            height: 16px; /* Thicker */
+            border-radius: 20px;
+            height: 16px;
             width: 100%;
             overflow: hidden;
             margin-bottom: 10px;
@@ -110,7 +124,6 @@
             width: 0%;
             border-radius: 20px;
             transition: width 0.5s cubic-bezier(0.22, 1, 0.36, 1);
-            /* Subtle red glow */
             box-shadow: 0 0 12px var(--accent-red-glow);
         }
         .progress-text {
@@ -120,7 +133,7 @@
             letter-spacing: 0.3px;
         }
 
-        /* Exercise Cards - The Main Event */
+        /* Exercise Cards */
         #exerciseList {
             display: flex;
             flex-direction: column;
@@ -128,34 +141,29 @@
         }
 
         .card {
-            /* Gradient background for depth */
             background: linear-gradient(to bottom, var(--card-bg-top), var(--card-bg-bottom));
             border: 1px solid var(--card-border);
-            border-radius: 22px; /* Super rounded */
+            border-radius: 22px;
             padding: 20px;
             display: flex;
-            flex-direction: column; /* Άλλαξε για να χωράει τα logs από κάτω */
+            flex-direction: column;
             align-items: stretch;
-            gap: 16px; /* Απόσταση main row με logs */
+            gap: 16px;
             transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1); /* Soft shadow */
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
         }
-        
         .card-top {
             display: flex;
             justify-content: space-between;
             align-items: center;
             width: 100%;
         }
-        
-        /* Completed State - Red Accent */
         .card.completed {
-            background: linear-gradient(to bottom, #161618, #0f0f11); /* Darker when done */
-            border-color: rgba(230, 46, 37, 0.2); /* Subtle red border */
+            background: linear-gradient(to bottom, #161618, #0f0f11);
+            border-color: rgba(230, 46, 37, 0.2);
         }
         
         .card-left { flex: 1; }
-        
         .exercise-name {
             font-size: 19px;
             font-weight: 700;
@@ -165,10 +173,7 @@
             gap: 8px;
             transition: color 0.3s;
         }
-        .card.completed .exercise-name {
-            color: var(--accent-red); /* Name turns red */
-        }
-
+        .card.completed .exercise-name { color: var(--accent-red); }
         .checkmark { display: none; color: var(--accent-red); }
         .card.completed .checkmark { display: inline-block; }
         
@@ -195,7 +200,6 @@
             touch-action: manipulation;
             -webkit-tap-highlight-color: transparent;
         }
-        
         .circle-btn {
             border-radius: 50%;
             display: flex;
@@ -207,27 +211,24 @@
             box-shadow: 0 2px 5px rgba(0,0,0,0.2);
         }
         .circle-btn:active { transform: scale(0.92); }
-
         .btn-minus { 
             background-color: var(--btn-neutral); 
-            width: 38px; height: 38px; /* Slightly larger */
+            width: 38px; height: 38px;
             font-size: 20px;
         }
-        /* Plus button is now RED */
         .btn-plus { 
             background: linear-gradient(135deg, var(--accent-red), #c01d15);
-            width: 48px; height: 48px; /* Larger and plump */
+            width: 48px; height: 48px;
             font-size: 26px;
             box-shadow: 0 4px 10px var(--accent-red-glow);
         }
-        
         .card.completed .btn-plus {
-             background: var(--btn-neutral); /* Neutral when done */
+             background: var(--btn-neutral);
              box-shadow: none;
              opacity: 0.5;
         }
 
-        /* --- SET TRACKING SYSTEM --- */
+        /* Tracker & Notes */
         .tracker-container {
             border-top: 1px solid var(--card-border);
             padding-top: 16px;
@@ -261,6 +262,14 @@
         .tracker-input:focus { border-color: var(--accent-red); }
         .tracker-input::placeholder { color: rgba(152, 152, 158, 0.4); }
         
+        .tracker-notes { margin-top: 5px; }
+        .tracker-notes input {
+            text-align: left;
+            font-size: 14px;
+            padding: 12px;
+            border-radius: 12px;
+        }
+
         .tracker-actions {
             display: flex;
             justify-content: flex-end;
@@ -285,7 +294,7 @@
             transform: translateX(-50%);
             background: linear-gradient(135deg, var(--btn-danger), #d62d24);
             color: white;
-            border-radius: 30px; /* Pill shape */
+            border-radius: 30px;
             padding: 16px 32px;
             font-size: 17px;
             font-weight: 700;
@@ -297,26 +306,23 @@
         }
         #resetBtn:active { transform: translateX(-50%) scale(0.96); }
 
-        /* --- MODALS (Glassmorphism) --- */
+        /* Modals */
         .modal {
             display: none;
             position: fixed;
             top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(0, 0, 0, 0.6); /* Lighter overlay */
+            background: rgba(0, 0, 0, 0.6);
             z-index: 100;
             justify-content: center;
             align-items: center;
-            backdrop-filter: blur(15px); /* Stronger blur behind */
+            backdrop-filter: blur(15px);
             -webkit-backdrop-filter: blur(15px);
         }
-
         .modal-content {
-            /* Frosted Glass effect */
             background: rgba(28, 28, 30, 0.85);
             border: 1px solid var(--card-border);
             backdrop-filter: blur(30px) saturate(180%);
             -webkit-backdrop-filter: blur(30px) saturate(180%);
-            
             width: 90%;
             max-width: 400px;
             max-height: 85vh;
@@ -324,16 +330,15 @@
             padding: 24px;
             display: flex;
             flex-direction: column;
-            gap: 18px;
+            gap: 14px;
             box-sizing: border-box;
             box-shadow: 0 20px 40px rgba(0,0,0,0.4);
         }
-
         .modal-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 10px;
+            margin-bottom: 5px;
         }
         .modal-header h2 { margin: 0; font-size: 26px; font-weight: 800; }
         .close-btn {
@@ -346,8 +351,8 @@
         }
 
         /* Inputs & Forms */
-        input {
-            background: rgba(0,0,0,0.2); /* Slightly transparent inputs */
+        input, select {
+            background: rgba(0,0,0,0.2);
             border: 1px solid var(--card-border);
             color: white;
             padding: 16px;
@@ -355,15 +360,15 @@
             font-size: 17px;
             outline: none;
             font-family: inherit;
-            box-sizing: border-box; /* Διασφαλίζει ότι το padding δεν μεγαλώνει το μέγεθος */
-            width: 100%; /* Γεμίζει σωστά το χώρο χωρίς να ξεφεύγει */
+            box-sizing: border-box;
+            width: 100%;
             transition: border-color 0.2s;
+            appearance: none; /* For select */
         }
-        input:focus { border-color: var(--accent-red); }
+        input:focus, select:focus { border-color: var(--accent-red); }
         input::placeholder { color: var(--text-sec); }
 
         .add-group { display: flex; gap: 12px; width: 100%; }
-        /* To min-width: 0 λέει στο flexbox να μην αφήνει το input να ξεχειλίζει */
         .add-group input[type="text"] { flex: 2; min-width: 0; }
         .add-group input[type="number"] { flex: 1; min-width: 0; }
 
@@ -377,29 +382,24 @@
             text-align: center;
             flex: 1;
             box-shadow: 0 4px 12px var(--accent-red-glow);
+            margin-top: 5px;
         }
         .action-btn:active { transform: scale(0.97); }
+        .action-btn.cancel { background: var(--btn-neutral); color: var(--text-main); box-shadow: none; }
         
-        .action-btn.cancel { 
-            background: var(--btn-neutral); 
-            color: var(--text-main);
-            box-shadow: none;
-        }
-        .action-btn.danger { background: var(--btn-danger); box-shadow: none; }
+        .modal-actions { display: flex; gap: 12px; margin-top: 10px; }
 
-        .modal-actions { display: flex; gap: 12px; margin-top: 15px; }
-
-        /* Settings Exercise List */
+        /* Settings List */
         .settings-list {
             display: flex;
             flex-direction: column;
             gap: 12px;
             overflow-y: auto;
-            margin-top: 15px;
+            margin-top: 10px;
             padding-bottom: 20px;
         }
         .set-item {
-            background: rgba(44, 44, 46, 0.6); /* More transparent */
+            background: rgba(44, 44, 46, 0.6);
             padding: 14px 18px;
             border-radius: 16px;
             display: flex;
@@ -410,6 +410,7 @@
         .set-item-info { flex: 1; }
         .set-item-name { font-weight: 700; font-size: 16px; }
         .set-item-goal { color: var(--text-sec); font-size: 14px; margin-top: 3px; }
+        .set-item-cat { color: var(--accent-red); font-size: 12px; font-weight: 600; text-transform: uppercase; margin-top: 2px;}
         
         .set-item-actions { display: flex; gap: 10px; }
         .set-item-actions button {
@@ -434,6 +435,16 @@
                 </svg>
             </button>
         </div>
+        
+        <div class="category-tabs" id="categoryTabs">
+            <button class="tab-btn active" onclick="setCategoryFilter('All')">All</button>
+            <button class="tab-btn" onclick="setCategoryFilter('Push')">Push</button>
+            <button class="tab-btn" onclick="setCategoryFilter('Pull')">Pull</button>
+            <button class="tab-btn" onclick="setCategoryFilter('Legs')">Legs</button>
+            <button class="tab-btn" onclick="setCategoryFilter('Upper')">Upper</button>
+            <button class="tab-btn" onclick="setCategoryFilter('Lower')">Lower</button>
+        </div>
+
         <div class="progress-container">
             <div class="progress-bar-bg">
                 <div class="progress-bar-fill" id="progressFill"></div>
@@ -453,11 +464,20 @@
                 <button onclick="closeSettings()" class="close-btn">✕</button>
             </div>
             
+            <select id="newExCategory">
+                <option value="Push">Push</option>
+                <option value="Pull">Pull</option>
+                <option value="Legs">Legs</option>
+                <option value="Upper">Upper</option>
+                <option value="Lower">Lower</option>
+                <option value="Other">Other</option>
+            </select>
+
             <div class="add-group">
                 <input type="text" id="newExName" placeholder="New exercise...">
                 <input type="number" id="newExGoal" placeholder="Sets" min="1">
             </div>
-            <button onclick="addExercise()" class="action-btn" style="margin-top: 10px;">Add to Routine</button>
+            <button onclick="addExercise()" class="action-btn">Add to Routine</button>
 
             <div class="settings-list" id="settingsExerciseList"></div>
         </div>
@@ -469,37 +489,42 @@
                 <h2>Edit Exercise</h2>
             </div>
             <input type="hidden" id="editExId">
-            <label style="font-weight: 600; margin-bottom: -10px;">Name</label>
+            
+            <label style="font-weight: 600; margin-bottom: -10px;">Category (Day)</label>
+            <select id="editExCategory">
+                <option value="Push">Push</option>
+                <option value="Pull">Pull</option>
+                <option value="Legs">Legs</option>
+                <option value="Upper">Upper</option>
+                <option value="Lower">Lower</option>
+                <option value="Other">Other</option>
+            </select>
+
+            <label style="font-weight: 600; margin-bottom: -10px; margin-top: 5px;">Name</label>
             <input type="text" id="editExName" placeholder="Exercise Name">
-            <label style="font-weight: 600; margin-bottom: -10px; margin-top: 10px;">Weekly Goal</label>
+            
+            <label style="font-weight: 600; margin-bottom: -10px; margin-top: 5px;">Weekly Goal</label>
             <input type="number" id="editExGoal" placeholder="Total Sets Goal" min="1">
             
             <div class="modal-actions">
                 <button onclick="closeEditModal()" class="action-btn cancel">Cancel</button>
-                <button onclick="saveEdit()" class="action-btn">Save Changes</button>
+                <button onclick="saveEdit()" class="action-btn">Save</button>
             </div>
         </div>
     </div>
 
     <script>
-        /* --- CORE DATA & LOGIC --- */
-        
+        /* --- DATA --- */
+        let currentFilter = 'All';
+
         const initialExercises = [
-            { id: 1, name: "Flat Press", goal: 5, remaining: 5, logs: [{w:'', r:''}, {w:'', r:''}] },
-            { id: 2, name: "Incline Press", goal: 5, remaining: 5, logs: [{w:'', r:''}, {w:'', r:''}] },
-            { id: 3, name: "Shoulder Press", goal: 5, remaining: 5, logs: [{w:'', r:''}, {w:'', r:''}] },
-            { id: 4, name: "Seated Row", goal: 5, remaining: 5, logs: [{w:'', r:''}, {w:'', r:''}] },
-            { id: 5, name: "Lat Pulldown", goal: 5, remaining: 5, logs: [{w:'', r:''}, {w:'', r:''}] },
-            { id: 6, name: "Lateral Raises", goal: 7, remaining: 7, logs: [{w:'', r:''}, {w:'', r:''}] },
-            { id: 7, name: "Rear Delts", goal: 4, remaining: 4, logs: [{w:'', r:''}, {w:'', r:''}] },
-            { id: 8, name: "Tricep (Overhead)", goal: 3, remaining: 3, logs: [{w:'', r:''}, {w:'', r:''}] },
-            { id: 9, name: "Tricep Extension", goal: 2, remaining: 2, logs: [{w:'', r:''}, {w:'', r:''}] },
-            { id: 10, name: "Biceps", goal: 5, remaining: 5, logs: [{w:'', r:''}, {w:'', r:''}] },
-            { id: 11, name: "Shrugs", goal: 3, remaining: 3, logs: [{w:'', r:''}, {w:'', r:''}] },
-            { id: 12, name: "Leg Press", goal: 5, remaining: 5, logs: [{w:'', r:''}, {w:'', r:''}] },
-            { id: 13, name: "Leg Extension", goal: 2, remaining: 2, logs: [{w:'', r:''}, {w:'', r:''}] },
-            { id: 14, name: "Leg Curl", goal: 6, remaining: 6, logs: [{w:'', r:''}, {w:'', r:''}] },
-            { id: 15, name: "RDL", goal: 4, remaining: 4, logs: [{w:'', r:''}, {w:'', r:''}] }
+            { id: 1, name: "Flat Press", category: "Push", goal: 5, remaining: 5, logs: [{w:'', r:''}, {w:'', r:''}], notes: "" },
+            { id: 2, name: "Incline Press", category: "Push", goal: 5, remaining: 5, logs: [{w:'', r:''}, {w:'', r:''}], notes: "" },
+            { id: 3, name: "Lat Pulldown", category: "Pull", goal: 5, remaining: 5, logs: [{w:'', r:''}, {w:'', r:''}], notes: "" },
+            { id: 4, name: "Seated Row", category: "Pull", goal: 5, remaining: 5, logs: [{w:'', r:''}, {w:'', r:''}], notes: "" },
+            { id: 5, name: "Leg Press", category: "Legs", goal: 5, remaining: 5, logs: [{w:'', r:''}, {w:'', r:''}], notes: "" },
+            { id: 6, name: "Leg Curl", category: "Legs", goal: 6, remaining: 6, logs: [{w:'', r:''}, {w:'', r:''}], notes: "" },
+            { id: 7, name: "Shoulder Press", category: "Upper", goal: 5, remaining: 5, logs: [{w:'', r:''}, {w:'', r:''}], notes: "" }
         ];
 
         let exercises = [];
@@ -512,11 +537,11 @@
             const savedData = localStorage.getItem('gymData'); 
             if (savedData) {
                 exercises = JSON.parse(savedData);
-                // Backwards compatibility: αν έχεις ήδη save χωρίς logs, πρόσθεσέ τα
+                // Backwards compatibility upgrades
                 exercises.forEach(ex => {
-                    if (!ex.logs) {
-                        ex.logs = [{w: '', r: ''}, {w: '', r: ''}];
-                    }
+                    if (!ex.logs) ex.logs = [{w: '', r: ''}, {w: '', r: ''}];
+                    if (!ex.category) ex.category = 'Other'; // Προστασία για παλιά δεδομένα
+                    if (ex.notes === undefined) ex.notes = '';
                 });
             } else {
                 exercises = JSON.parse(JSON.stringify(initialExercises));
@@ -532,8 +557,21 @@
             }
         }
 
-        /* --- DASHBOARD LOGIC --- */
+        /* --- FILTERS --- */
+        function setCategoryFilter(cat) {
+            triggerHaptic();
+            currentFilter = cat;
+            
+            // Update Active Tab UI
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+                if(btn.innerText === cat) btn.classList.add('active');
+            });
+            
+            renderUI();
+        }
 
+        /* --- DASHBOARD LOGIC --- */
         function addSet(id) {
             triggerHaptic();
             const ex = exercises.find(e => e.id === id);
@@ -557,20 +595,25 @@
             if (confirm("Reset all weekly progress? This cannot be undone.")) {
                 exercises.forEach(ex => { 
                     ex.remaining = ex.goal; 
-                    // Τα logs (ex.logs) δεν τα πειράζουμε πλέον, οπότε μένουν ως έχουν!
+                    // Logs και Notes παραμένουν ανέπαφα!
                 });
                 saveData();
             }
         }
 
-        /* --- LOGGING LOGIC --- */
-
+        /* --- LOGGING & NOTES --- */
         function updateLog(exId, logIndex, field, value) {
             const ex = exercises.find(e => e.id === exId);
             if (ex) {
                 ex.logs[logIndex][field] = value;
-                // Αποθηκεύουμε στο localStorage ΧΩΡΙΣ να κάνουμε renderUI,
-                // αλλιώς ο χρήστης θα χάνει το "focus" από το πληκτρολόγιο
+                localStorage.setItem('gymData', JSON.stringify(exercises));
+            }
+        }
+
+        function updateNotes(exId, value) {
+            const ex = exercises.find(e => e.id === exId);
+            if (ex) {
+                ex.notes = value;
                 localStorage.setItem('gymData', JSON.stringify(exercises));
             }
         }
@@ -587,7 +630,7 @@
         function removeLogSet(id) {
             triggerHaptic();
             const ex = exercises.find(e => e.id === id);
-            if (ex && ex.logs.length > 1) { // Minimum 1 set log
+            if (ex && ex.logs.length > 1) { 
                 ex.logs.pop();
                 saveData();
             }
@@ -600,13 +643,18 @@
             let totalGoal = 0;
             let totalRemaining = 0;
 
-            exercises.forEach(ex => {
+            // Φιλτράρισμα βάσει της επιλεγμένης κατηγορίας
+            const filteredExercises = currentFilter === 'All' 
+                ? exercises 
+                : exercises.filter(ex => ex.category === currentFilter);
+
+            // Υπολογισμός Progress ΜΟΝΟ για την επιλεγμένη κατηγορία (ή για όλες αν είναι στο All)
+            filteredExercises.forEach(ex => {
                 totalGoal += ex.goal;
                 totalRemaining += ex.remaining;
 
                 const isCompleted = ex.remaining === 0;
                 
-                // Δημιουργία των inputs για το session tracking
                 let logsHtml = '';
                 ex.logs.forEach((log, index) => {
                     logsHtml += `
@@ -643,6 +691,9 @@
                             <button class="tracker-btn" onclick="removeLogSet(${ex.id})">- Set</button>
                             <button class="tracker-btn" onclick="addLogSet(${ex.id})">+ Set</button>
                         </div>
+                        <div class="tracker-notes">
+                            <input type="text" class="tracker-input" placeholder="Notes (e.g. felt heavy)..." value="${ex.notes || ''}" oninput="updateNotes(${ex.id}, this.value)">
+                        </div>
                     </div>
                 `;
                 listContainer.appendChild(card);
@@ -655,11 +706,12 @@
             }
 
             document.getElementById('progressFill').style.width = `${progressPercent}%`;
-            document.getElementById('progressText').innerText = `${progressPercent}% weekly volume.`;
+            document.getElementById('progressText').innerText = currentFilter === 'All' 
+                ? `${progressPercent}% weekly volume.`
+                : `${progressPercent}% volume for ${currentFilter}.`;
         }
 
         /* --- SETTINGS LOGIC --- */
-
         function openSettings() {
             triggerHaptic();
             document.getElementById('settingsModal').style.display = 'flex';
@@ -680,6 +732,7 @@
                 item.innerHTML = `
                     <div class="set-item-info">
                         <div class="set-item-name">${ex.name}</div>
+                        <div class="set-item-cat">${ex.category}</div>
                         <div class="set-item-goal">Goal: ${ex.goal} sets</div>
                     </div>
                     <div class="set-item-actions">
@@ -694,9 +747,11 @@
         function addExercise() {
             const nameInput = document.getElementById('newExName');
             const goalInput = document.getElementById('newExGoal');
+            const catSelect = document.getElementById('newExCategory');
             
             const name = nameInput.value.trim();
             const goal = parseInt(goalInput.value);
+            const cat = catSelect.value;
 
             if (!name || isNaN(goal) || goal < 1) {
                 alert("Please enter a valid name and number of sets.");
@@ -708,9 +763,11 @@
             exercises.push({
                 id: newId,
                 name: name,
+                category: cat,
                 goal: goal,
                 remaining: goal,
-                logs: [{w: '', r: ''}, {w: '', r: ''}] // Default 2 sets
+                logs: [{w: '', r: ''}, {w: '', r: ''}],
+                notes: ""
             });
 
             nameInput.value = '';
@@ -726,7 +783,6 @@
         }
 
         /* --- EDIT LOGIC --- */
-
         function openEditModal(id) {
             const ex = exercises.find(e => e.id === id);
             if (!ex) return;
@@ -734,6 +790,7 @@
             document.getElementById('editExId').value = ex.id;
             document.getElementById('editExName').value = ex.name;
             document.getElementById('editExGoal').value = ex.goal;
+            document.getElementById('editExCategory').value = ex.category;
             
             document.getElementById('editModal').style.display = 'flex';
         }
@@ -746,6 +803,7 @@
             const id = parseInt(document.getElementById('editExId').value);
             const newName = document.getElementById('editExName').value.trim();
             const newGoal = parseInt(document.getElementById('editExGoal').value);
+            const newCat = document.getElementById('editExCategory').value;
 
             if (!newName || isNaN(newGoal) || newGoal < 1) {
                 alert("Please enter valid data.");
@@ -756,6 +814,7 @@
             if (exIndex !== -1) {
                 const ex = exercises[exIndex];
                 ex.name = newName;
+                ex.category = newCat;
                 
                 const completedSets = ex.goal - ex.remaining;
                 ex.goal = newGoal;
