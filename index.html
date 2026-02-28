@@ -80,7 +80,7 @@
         }
         #settingsBtn:active { background: rgba(60, 60, 64, 0.8); }
 
-        /* Categories (Tabs) */
+        /* Category Tabs */
         .category-tabs {
             display: flex;
             gap: 10px;
@@ -167,9 +167,10 @@
         .exercise-name {
             font-size: 19px;
             font-weight: 700;
-            margin-bottom: 6px;
+            margin-bottom: 4px;
             display: flex;
             align-items: center;
+            flex-wrap: wrap;
             gap: 8px;
             transition: color 0.3s;
         }
@@ -177,6 +178,16 @@
         .checkmark { display: none; color: var(--accent-red); }
         .card.completed .checkmark { display: inline-block; }
         
+        .card-badge {
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--text-sec);
+            font-size: 11px;
+            padding: 3px 8px;
+            border-radius: 10px;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
         .exercise-status {
             color: var(--text-sec);
             font-size: 15px;
@@ -333,6 +344,7 @@
             gap: 14px;
             box-sizing: border-box;
             box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+            overflow-y: auto;
         }
         .modal-header {
             display: flex;
@@ -350,8 +362,8 @@
             display: flex; justify-content: center; align-items: center;
         }
 
-        /* Inputs & Forms */
-        input, select {
+        /* Inputs & Multi-select Pills */
+        input {
             background: rgba(0,0,0,0.2);
             border: 1px solid var(--card-border);
             color: white;
@@ -363,10 +375,36 @@
             box-sizing: border-box;
             width: 100%;
             transition: border-color 0.2s;
-            appearance: none; /* For select */
         }
-        input:focus, select:focus { border-color: var(--accent-red); }
+        input:focus { border-color: var(--accent-red); }
         input::placeholder { color: var(--text-sec); }
+
+        .cat-select-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 5px;
+            padding: 4px 0;
+        }
+        
+        .cat-pill {
+            background: var(--btn-neutral);
+            color: var(--text-sec);
+            border-radius: 16px;
+            padding: 10px 16px;
+            font-size: 15px;
+            font-weight: 600;
+            border: 1px solid transparent;
+            cursor: pointer;
+            transition: all 0.2s;
+            user-select: none;
+        }
+        
+        .cat-pill.selected {
+            background: rgba(230, 46, 37, 0.15);
+            color: var(--accent-red);
+            border-color: var(--accent-red);
+        }
 
         .add-group { display: flex; gap: 12px; width: 100%; }
         .add-group input[type="text"] { flex: 2; min-width: 0; }
@@ -408,9 +446,22 @@
             border: 1px solid var(--card-border);
         }
         .set-item-info { flex: 1; }
-        .set-item-name { font-weight: 700; font-size: 16px; }
-        .set-item-goal { color: var(--text-sec); font-size: 14px; margin-top: 3px; }
-        .set-item-cat { color: var(--accent-red); font-size: 12px; font-weight: 600; text-transform: uppercase; margin-top: 2px;}
+        .set-item-name { font-weight: 700; font-size: 16px; margin-bottom: 4px; }
+        .set-item-goal { color: var(--text-sec); font-size: 14px; margin-top: 4px; }
+        .set-item-cats {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+        }
+        .set-item-cat-tag {
+            background: rgba(230, 46, 37, 0.15);
+            color: var(--accent-red);
+            font-size: 11px;
+            font-weight: 700;
+            padding: 2px 6px;
+            border-radius: 6px;
+            text-transform: uppercase;
+        }
         
         .set-item-actions { display: flex; gap: 10px; }
         .set-item-actions button {
@@ -464,14 +515,14 @@
                 <button onclick="closeSettings()" class="close-btn">✕</button>
             </div>
             
-            <select id="newExCategory">
-                <option value="Push">Push</option>
-                <option value="Pull">Pull</option>
-                <option value="Legs">Legs</option>
-                <option value="Upper">Upper</option>
-                <option value="Lower">Lower</option>
-                <option value="Other">Other</option>
-            </select>
+            <label style="font-weight: 600; margin-bottom: -10px;">Select Days (Multiple allowed)</label>
+            <div class="cat-select-container" id="newExCategories">
+                <div class="cat-pill" data-val="Push" onclick="togglePill(this)">Push</div>
+                <div class="cat-pill" data-val="Pull" onclick="togglePill(this)">Pull</div>
+                <div class="cat-pill" data-val="Legs" onclick="togglePill(this)">Legs</div>
+                <div class="cat-pill" data-val="Upper" onclick="togglePill(this)">Upper</div>
+                <div class="cat-pill" data-val="Lower" onclick="togglePill(this)">Lower</div>
+            </div>
 
             <div class="add-group">
                 <input type="text" id="newExName" placeholder="New exercise...">
@@ -490,15 +541,14 @@
             </div>
             <input type="hidden" id="editExId">
             
-            <label style="font-weight: 600; margin-bottom: -10px;">Category (Day)</label>
-            <select id="editExCategory">
-                <option value="Push">Push</option>
-                <option value="Pull">Pull</option>
-                <option value="Legs">Legs</option>
-                <option value="Upper">Upper</option>
-                <option value="Lower">Lower</option>
-                <option value="Other">Other</option>
-            </select>
+            <label style="font-weight: 600; margin-bottom: -10px;">Select Days (Multiple allowed)</label>
+            <div class="cat-select-container" id="editExCategories">
+                <div class="cat-pill" data-val="Push" onclick="togglePill(this)">Push</div>
+                <div class="cat-pill" data-val="Pull" onclick="togglePill(this)">Pull</div>
+                <div class="cat-pill" data-val="Legs" onclick="togglePill(this)">Legs</div>
+                <div class="cat-pill" data-val="Upper" onclick="togglePill(this)">Upper</div>
+                <div class="cat-pill" data-val="Lower" onclick="togglePill(this)">Lower</div>
+            </div>
 
             <label style="font-weight: 600; margin-bottom: -10px; margin-top: 5px;">Name</label>
             <input type="text" id="editExName" placeholder="Exercise Name">
@@ -514,17 +564,25 @@
     </div>
 
     <script>
-        /* --- DATA --- */
+        /* --- DATA & STATE --- */
         let currentFilter = 'All';
 
         const initialExercises = [
-            { id: 1, name: "Flat Press", category: "Push", goal: 5, remaining: 5, logs: [{w:'', r:''}, {w:'', r:''}], notes: "" },
-            { id: 2, name: "Incline Press", category: "Push", goal: 5, remaining: 5, logs: [{w:'', r:''}, {w:'', r:''}], notes: "" },
-            { id: 3, name: "Lat Pulldown", category: "Pull", goal: 5, remaining: 5, logs: [{w:'', r:''}, {w:'', r:''}], notes: "" },
-            { id: 4, name: "Seated Row", category: "Pull", goal: 5, remaining: 5, logs: [{w:'', r:''}, {w:'', r:''}], notes: "" },
-            { id: 5, name: "Leg Press", category: "Legs", goal: 5, remaining: 5, logs: [{w:'', r:''}, {w:'', r:''}], notes: "" },
-            { id: 6, name: "Leg Curl", category: "Legs", goal: 6, remaining: 6, logs: [{w:'', r:''}, {w:'', r:''}], notes: "" },
-            { id: 7, name: "Shoulder Press", category: "Upper", goal: 5, remaining: 5, logs: [{w:'', r:''}, {w:'', r:''}], notes: "" }
+            { 
+                id: 1, name: "Flat Press", categories: ["Push", "Upper"], goal: 5, remaining: 5, 
+                logs: { "Push": [{w:'', r:''}, {w:'', r:''}], "Upper": [{w:'', r:''}, {w:'', r:''}] },
+                notes: { "Push": "", "Upper": "" }
+            },
+            { 
+                id: 2, name: "Lat Pulldown", categories: ["Pull", "Upper"], goal: 5, remaining: 5, 
+                logs: { "Pull": [{w:'', r:''}, {w:'', r:''}], "Upper": [{w:'', r:''}, {w:'', r:''}] },
+                notes: { "Pull": "", "Upper": "" }
+            },
+            { 
+                id: 3, name: "Leg Press", categories: ["Legs", "Lower"], goal: 6, remaining: 6, 
+                logs: { "Legs": [{w:'', r:''}, {w:'', r:''}], "Lower": [{w:'', r:''}, {w:'', r:''}] },
+                notes: { "Legs": "", "Lower": "" }
+            }
         ];
 
         let exercises = [];
@@ -533,15 +591,64 @@
             if (navigator.vibrate) navigator.vibrate(50);
         }
 
+        /* --- PILL MULTI-SELECT UI --- */
+        function togglePill(element) {
+            triggerHaptic();
+            element.classList.toggle('selected');
+        }
+
+        function getSelectedPills(containerId) {
+            const container = document.getElementById(containerId);
+            const selected = container.querySelectorAll('.cat-pill.selected');
+            return Array.from(selected).map(pill => pill.dataset.val);
+        }
+
+        function setPills(containerId, selectedValues) {
+            const container = document.getElementById(containerId);
+            const pills = container.querySelectorAll('.cat-pill');
+            pills.forEach(pill => {
+                if (selectedValues.includes(pill.dataset.val)) {
+                    pill.classList.add('selected');
+                } else {
+                    pill.classList.remove('selected');
+                }
+            });
+        }
+
         function initApp() {
             const savedData = localStorage.getItem('gymData'); 
             if (savedData) {
                 exercises = JSON.parse(savedData);
-                // Backwards compatibility upgrades
+                
+                // --- ΕΞΥΠΝΟ UPGRADE ΑΠΟ ΤΗΝ ΠΑΛΙΑ ΜΟΡΦΗ ---
                 exercises.forEach(ex => {
-                    if (!ex.logs) ex.logs = [{w: '', r: ''}, {w: '', r: ''}];
-                    if (!ex.category) ex.category = 'Other'; // Προστασία για παλιά δεδομένα
-                    if (ex.notes === undefined) ex.notes = '';
+                    // 1. Μετατροπή category (string) σε categories (array)
+                    if (ex.category && !ex.categories) {
+                        ex.categories = [ex.category];
+                        delete ex.category;
+                    } else if (!ex.categories || ex.categories.length === 0) {
+                        ex.categories = ['Other'];
+                    }
+
+                    // 2. Μετατροπή logs (array) σε logs (object ανά κατηγορία)
+                    if (Array.isArray(ex.logs)) {
+                        const oldLogs = ex.logs;
+                        ex.logs = {};
+                        ex.categories.forEach(cat => ex.logs[cat] = JSON.parse(JSON.stringify(oldLogs)));
+                    } else if (!ex.logs) {
+                        ex.logs = {};
+                        ex.categories.forEach(cat => ex.logs[cat] = [{w:'', r:''}, {w:'', r:''}]);
+                    }
+
+                    // 3. Μετατροπή notes (string) σε notes (object ανά κατηγορία)
+                    if (typeof ex.notes === 'string') {
+                        const oldNote = ex.notes;
+                        ex.notes = {};
+                        ex.categories.forEach(cat => ex.notes[cat] = oldNote);
+                    } else if (!ex.notes) {
+                        ex.notes = {};
+                        ex.categories.forEach(cat => ex.notes[cat] = '');
+                    }
                 });
             } else {
                 exercises = JSON.parse(JSON.stringify(initialExercises));
@@ -562,7 +669,6 @@
             triggerHaptic();
             currentFilter = cat;
             
-            // Update Active Tab UI
             document.querySelectorAll('.tab-btn').forEach(btn => {
                 btn.classList.remove('active');
                 if(btn.innerText === cat) btn.classList.add('active');
@@ -571,7 +677,7 @@
             renderUI();
         }
 
-        /* --- DASHBOARD LOGIC --- */
+        /* --- DASHBOARD LOGIC (ΚΟΙΝΟ REMAINING ΣΕ ΟΛΕΣ ΤΙΣ ΜΕΡΕΣ) --- */
         function addSet(id) {
             triggerHaptic();
             const ex = exercises.find(e => e.id === id);
@@ -592,46 +698,43 @@
 
         function resetWeek() {
             triggerHaptic();
-            if (confirm("Reset all weekly progress? This cannot be undone.")) {
-                exercises.forEach(ex => { 
-                    ex.remaining = ex.goal; 
-                    // Logs και Notes παραμένουν ανέπαφα!
-                });
+            if (confirm("Reset all weekly progress? Logs will be kept.")) {
+                exercises.forEach(ex => { ex.remaining = ex.goal; });
                 saveData();
             }
         }
 
-        /* --- LOGGING & NOTES --- */
-        function updateLog(exId, logIndex, field, value) {
+        /* --- LOGGING & NOTES (ΑΝΕΞΑΡΤΗΤΑ ΑΝΑ ΜΕΡΑ) --- */
+        function updateLog(exId, catName, logIndex, field, value) {
             const ex = exercises.find(e => e.id === exId);
-            if (ex) {
-                ex.logs[logIndex][field] = value;
+            if (ex && ex.logs[catName]) {
+                ex.logs[catName][logIndex][field] = value;
                 localStorage.setItem('gymData', JSON.stringify(exercises));
             }
         }
 
-        function updateNotes(exId, value) {
+        function updateNotes(exId, catName, value) {
             const ex = exercises.find(e => e.id === exId);
-            if (ex) {
-                ex.notes = value;
+            if (ex && ex.notes[catName] !== undefined) {
+                ex.notes[catName] = value;
                 localStorage.setItem('gymData', JSON.stringify(exercises));
             }
         }
 
-        function addLogSet(id) {
+        function addLogSet(id, catName) {
             triggerHaptic();
             const ex = exercises.find(e => e.id === id);
-            if (ex) {
-                ex.logs.push({w: '', r: ''});
+            if (ex && ex.logs[catName]) {
+                ex.logs[catName].push({w: '', r: ''});
                 saveData();
             }
         }
 
-        function removeLogSet(id) {
+        function removeLogSet(id, catName) {
             triggerHaptic();
             const ex = exercises.find(e => e.id === id);
-            if (ex && ex.logs.length > 1) { 
-                ex.logs.pop();
+            if (ex && ex.logs[catName] && ex.logs[catName].length > 1) { 
+                ex.logs[catName].pop();
                 saveData();
             }
         }
@@ -643,26 +746,45 @@
             let totalGoal = 0;
             let totalRemaining = 0;
 
-            // Φιλτράρισμα βάσει της επιλεγμένης κατηγορίας
-            const filteredExercises = currentFilter === 'All' 
-                ? exercises 
-                : exercises.filter(ex => ex.category === currentFilter);
+            // Ετοιμάζουμε ποια items θα δείξουμε. 
+            // Αν είμαστε στο All, δείχνουμε την άσκηση ΞΕΧΩΡΙΣΤΑ για κάθε μέρα της (για να βλέπεις όλα τα logs).
+            let displayList = [];
+            
+            if (currentFilter === 'All') {
+                exercises.forEach(ex => {
+                    totalGoal += ex.goal;
+                    totalRemaining += ex.remaining;
+                    ex.categories.forEach(cat => {
+                        displayList.push({ ex: ex, activeCat: cat });
+                    });
+                });
+            } else {
+                exercises.forEach(ex => {
+                    if (ex.categories.includes(currentFilter)) {
+                        totalGoal += ex.goal;
+                        totalRemaining += ex.remaining;
+                        displayList.push({ ex: ex, activeCat: currentFilter });
+                    }
+                });
+            }
 
-            // Υπολογισμός Progress ΜΟΝΟ για την επιλεγμένη κατηγορία (ή για όλες αν είναι στο All)
-            filteredExercises.forEach(ex => {
-                totalGoal += ex.goal;
-                totalRemaining += ex.remaining;
-
+            displayList.forEach(item => {
+                const ex = item.ex;
+                const activeCat = item.activeCat;
                 const isCompleted = ex.remaining === 0;
                 
+                // Διασφάλιση ότι υπάρχει το object για την κατηγορία (fallback)
+                if (!ex.logs[activeCat]) ex.logs[activeCat] = [{w:'', r:''}, {w:'', r:''}];
+                if (ex.notes[activeCat] === undefined) ex.notes[activeCat] = "";
+
                 let logsHtml = '';
-                ex.logs.forEach((log, index) => {
+                ex.logs[activeCat].forEach((log, index) => {
                     logsHtml += `
                         <div class="tracker-row">
                             <span class="tracker-label">Set ${index + 1}</span>
-                            <input type="number" inputmode="decimal" class="tracker-input" placeholder="kg" value="${log.w}" oninput="updateLog(${ex.id}, ${index}, 'w', this.value)">
+                            <input type="number" inputmode="decimal" class="tracker-input" placeholder="kg" value="${log.w}" oninput="updateLog(${ex.id}, '${activeCat}', ${index}, 'w', this.value)">
                             <span style="color: var(--text-sec); font-weight: bold;">×</span>
-                            <input type="number" inputmode="numeric" class="tracker-input" placeholder="reps" value="${log.r}" oninput="updateLog(${ex.id}, ${index}, 'r', this.value)">
+                            <input type="number" inputmode="numeric" class="tracker-input" placeholder="reps" value="${log.r}" oninput="updateLog(${ex.id}, '${activeCat}', ${index}, 'r', this.value)">
                         </div>
                     `;
                 });
@@ -670,11 +792,14 @@
                 const card = document.createElement('div');
                 card.className = `card ${isCompleted ? 'completed' : ''}`;
                 
+                // Στο "All" δείχνουμε ένα ταμπελάκι δίπλα στο όνομα για να ξέρεις ποιας μέρας τα logs βλέπεις
+                const badgeHtml = currentFilter === 'All' ? `<span class="card-badge">${activeCat}</span>` : '';
+
                 card.innerHTML = `
                     <div class="card-top">
                         <div class="card-left">
                             <div class="exercise-name">
-                                ${ex.name} 
+                                ${ex.name} ${badgeHtml}
                                 <span class="checkmark">✓</span>
                             </div>
                             <div class="exercise-status">${ex.remaining} / ${ex.goal} sets left</div>
@@ -688,11 +813,11 @@
                     <div class="tracker-container">
                         ${logsHtml}
                         <div class="tracker-actions">
-                            <button class="tracker-btn" onclick="removeLogSet(${ex.id})">- Set</button>
-                            <button class="tracker-btn" onclick="addLogSet(${ex.id})">+ Set</button>
+                            <button class="tracker-btn" onclick="removeLogSet(${ex.id}, '${activeCat}')">- Set</button>
+                            <button class="tracker-btn" onclick="addLogSet(${ex.id}, '${activeCat}')">+ Set</button>
                         </div>
                         <div class="tracker-notes">
-                            <input type="text" class="tracker-input" placeholder="Notes (e.g. felt heavy)..." value="${ex.notes || ''}" oninput="updateNotes(${ex.id}, this.value)">
+                            <input type="text" class="tracker-input" placeholder="Notes for ${activeCat} day..." value="${ex.notes[activeCat]}" oninput="updateNotes(${ex.id}, '${activeCat}', this.value)">
                         </div>
                     </div>
                 `;
@@ -716,6 +841,7 @@
             triggerHaptic();
             document.getElementById('settingsModal').style.display = 'flex';
             renderSettingsList();
+            setPills('newExCategories', []); // Καθαρισμός επιλογών κατά το άνοιγμα
         }
 
         function closeSettings() {
@@ -729,10 +855,16 @@
             exercises.forEach(ex => {
                 const item = document.createElement('div');
                 item.className = 'set-item';
+                
+                let catsHtml = '';
+                ex.categories.forEach(cat => {
+                    catsHtml += `<span class="set-item-cat-tag">${cat}</span>`;
+                });
+
                 item.innerHTML = `
                     <div class="set-item-info">
                         <div class="set-item-name">${ex.name}</div>
-                        <div class="set-item-cat">${ex.category}</div>
+                        <div class="set-item-cats">${catsHtml}</div>
                         <div class="set-item-goal">Goal: ${ex.goal} sets</div>
                     </div>
                     <div class="set-item-actions">
@@ -747,31 +879,38 @@
         function addExercise() {
             const nameInput = document.getElementById('newExName');
             const goalInput = document.getElementById('newExGoal');
-            const catSelect = document.getElementById('newExCategory');
+            const selectedCats = getSelectedPills('newExCategories');
             
             const name = nameInput.value.trim();
             const goal = parseInt(goalInput.value);
-            const cat = catSelect.value;
 
-            if (!name || isNaN(goal) || goal < 1) {
-                alert("Please enter a valid name and number of sets.");
+            if (!name || isNaN(goal) || goal < 1 || selectedCats.length === 0) {
+                alert("Please enter a name, sets goal, and select at least one day.");
                 return;
             }
 
             const newId = exercises.length > 0 ? Math.max(...exercises.map(e => e.id)) + 1 : 1;
             
+            let newLogs = {};
+            let newNotes = {};
+            selectedCats.forEach(cat => {
+                newLogs[cat] = [{w: '', r: ''}, {w: '', r: ''}];
+                newNotes[cat] = "";
+            });
+
             exercises.push({
                 id: newId,
                 name: name,
-                category: cat,
+                categories: selectedCats,
                 goal: goal,
                 remaining: goal,
-                logs: [{w: '', r: ''}, {w: '', r: ''}],
-                notes: ""
+                logs: newLogs,
+                notes: newNotes
             });
 
             nameInput.value = '';
             goalInput.value = '';
+            setPills('newExCategories', []);
             saveData();
         }
 
@@ -790,7 +929,7 @@
             document.getElementById('editExId').value = ex.id;
             document.getElementById('editExName').value = ex.name;
             document.getElementById('editExGoal').value = ex.goal;
-            document.getElementById('editExCategory').value = ex.category;
+            setPills('editExCategories', ex.categories);
             
             document.getElementById('editModal').style.display = 'flex';
         }
@@ -803,10 +942,10 @@
             const id = parseInt(document.getElementById('editExId').value);
             const newName = document.getElementById('editExName').value.trim();
             const newGoal = parseInt(document.getElementById('editExGoal').value);
-            const newCat = document.getElementById('editExCategory').value;
+            const newCats = getSelectedPills('editExCategories');
 
-            if (!newName || isNaN(newGoal) || newGoal < 1) {
-                alert("Please enter valid data.");
+            if (!newName || isNaN(newGoal) || newGoal < 1 || newCats.length === 0) {
+                alert("Please enter valid data and select at least one day.");
                 return;
             }
 
@@ -814,7 +953,13 @@
             if (exIndex !== -1) {
                 const ex = exercises[exIndex];
                 ex.name = newName;
-                ex.category = newCat;
+                ex.categories = newCats;
+                
+                // Αν προστέθηκαν νέες μέρες κατά το edit, δημιουργούμε τα logs/notes για αυτές
+                newCats.forEach(cat => {
+                    if (!ex.logs[cat]) ex.logs[cat] = [{w: '', r: ''}, {w: '', r: ''}];
+                    if (ex.notes[cat] === undefined) ex.notes[cat] = "";
+                });
                 
                 const completedSets = ex.goal - ex.remaining;
                 ex.goal = newGoal;
